@@ -17,13 +17,13 @@ with open("data.json", "rb") as data_file:
 cipher = AES.new(key, AES.MODE_EAX)
 ciphertext, tag = cipher.encrypt_and_digest(data)
 
-file_out = open("encrypted.json", "wb")
+file_out = open("encrypted_data.json", "wb")
 [file_out.write(x) for x in (cipher.nonce, tag, ciphertext)]
 file_out.close()
 # --------------------------------------------------------------------
 # ------------------------------------ decryption part ----------------
 
-file_in = open("encrypted.json", "rb")
+file_in = open("encrypted_data.json", "rb")
 nonce, tag, ciphertext = [file_in.read(x) for x in (16, 16, -1)]
 
 with open("mykey.key", "rb") as mykey_file:
@@ -31,6 +31,6 @@ with open("mykey.key", "rb") as mykey_file:
 # let's assume that the key is somehow available again
 cipher = AES.new(key, AES.MODE_EAX, nonce)
 data = cipher.decrypt_and_verify(ciphertext, tag)
-print(data)
-with open("decrypted.json", "wb") as decrypted_file:
+# print(data)
+with open("decrypted_data.json", "wb") as decrypted_file:
     decrypted_file.write(data)
